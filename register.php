@@ -22,26 +22,44 @@ if ($conn->connect_error) {
 $registrationMessage = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $user_name = $_POST["username"];
-    $user_password = $_POST["password"];
+    $user_name = htmlspecialchars($_POST["username"]);
+    $user_password = htmlspecialchars($_POST["password"]);
     $hashedPassword = password_hash($user_password, PASSWORD_DEFAULT);
     $api_key = "0";
 
-    $stmt = $conn->prepare("INSERT INTO users (User, User_Password, API_KEY) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $user_name, $hashedPassword, $api_key);
-
-    if ($stmt->execute()) {
-        $registrationMessage = "Registered successfully";
-        sleep(1);
-        $stmt->close();
-        $conn->close();
-        header("location: login.php");
-        exit;
+    // if exists
+    $check_stmt = $conn->prepare("SELECT User FROM users WHERE User = ?");
+    $check_stmt->bind_param("s", $user_name);
+    $check_stmt->execute();
+    $check_stmt->store_result();
+    
+    if ($check_stmt->num_rows > 0) {
+        $registrationMessage = "Error: Username already exists";
     } else {
-        $registrationMessage = "Error: " . $stmt->error;
+        // if doesnt exist
+        $stmt = $conn->prepare("INSERT INTO users (User, User_Password, API_KEY) VALUES (?, ?, ?)");
+        if (!$stmt) {
+            $registrationMessage = "Error: " . $conn->error;
+        } else {
+            $stmt->bind_param("sss", $user_name, $hashedPassword, $api_key);
+
+            if ($stmt->execute()) {
+                $registrationMessage = "Registered successfully";
+                sleep(1);
+                $stmt->close();
+                $conn->close();
+                header("location: login.php");
+                exit;
+            } else {
+                $registrationMessage = "Error: " . $stmt->error;
+            }
+        }
     }
     
-    $stmt->close();
+    $check_stmt->close();
+    if (isset($stmt)) {
+        $stmt->close();
+    }
 }
 
 $conn->close();
@@ -86,6 +104,10 @@ $conn->close();
                 </div>
             </form>
         </div>
+        <?php if(!empty($registrationMessage)): ?>
+        <p class="text-red-500"><?php echo $registrationMessage; ?></p>
+        <?php endif; ?>
+        <p class="text-gray-700">Already have an account? <a href="login.php" class="text-blue-500 hover:text-blue-700">Login</a></p>
     </div>
 </body>
 

@@ -34,7 +34,7 @@ if ($conn->connect_error) {
 $username = $_SESSION["username"];
 $apiKey = '';
 
-// Check if API key exists for the user
+// Check if username exists in the database
 $stmt = $conn->prepare("SELECT API_KEY FROM users WHERE User = ?");
 $stmt->bind_param("s", $username);
 
@@ -43,6 +43,10 @@ if ($stmt->execute()) {
     if ($result->num_rows === 1) {
         $row = $result->fetch_assoc();
         $apiKey = $row['API_KEY'];
+    } else {
+        // Redirect to index.php if the username doesn't exist in the database
+        header("location: index.php");
+        exit;
     }
 } else {
     echo "Error: " . $stmt->error;
@@ -56,7 +60,7 @@ if (isset($_POST['generate'])) {
     $stmt->bind_param("ss", $apiKey, $username);
 
     if ($stmt->execute()) {
-        // API key generated successfully
+        // success
     } else {
         echo "Error updating record: " . $conn->error;
     }

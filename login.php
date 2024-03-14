@@ -99,6 +99,7 @@ $conn->close();
         <?php if (!empty($loginMessage)): ?>
             <p class="text-red-500"><?php echo $loginMessage; ?></p>
         <?php endif; ?>
+        <p class="text-gray-700">Don't have an account? <a href="register.php" class="text-blue-500 hover:text-blue-700">Register</a></p>
     </div>
 </body>
 
