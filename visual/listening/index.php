@@ -19,7 +19,6 @@ if (isset($http_response_header) && is_array($http_response_header)) {
 }
 
 if ($http_status !== 429) {
-    logConsole("HTTP status: " . $http_status);
     $data = json_decode($json_data, true);
     if ($data !== null) {
         if (isset($data["listeningData"])) {
