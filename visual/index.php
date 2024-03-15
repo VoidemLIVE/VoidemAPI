@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +11,7 @@
     <div class="text-center">
         <h1 class="text-6xl font-bold text-gray-900 mb-4">Voidem API Visualiser</h1>
         <p class="text-lg text-gray-700 mb-8">Voidem API endpoints used in practice</p>
-        <a href="/docs" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Documentation</a>
+        <a href="https://apidocs.voidem.com" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Documentation</a>
     </div>
 </body>
-
 </html>

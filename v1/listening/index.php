@@ -78,7 +78,7 @@ $stmt->close();
 
 $client_ip = getClientIP();
 if ($restricted === 1 && !in_array($client_ip, $restrictedIPS)) {
-    die(json_encode(["error" => "API Key is restricted!"]));
+    die(json_encode(["error" => "API Key is restricted"]));
 }
 
 $curl = curl_init();

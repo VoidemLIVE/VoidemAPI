@@ -12,7 +12,7 @@
     <div class="text-center">
         <h1 class="text-6xl font-bold text-gray-900 mb-4">Voidem API V1</h1>
         <p class="text-lg text-gray-700 mb-8">Version 1 of the Voidem API</p>
-        <a href="/" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Endpoints</a>
+        <a href="https://apidocs.voidem.com/" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Endpoints</a>
     </div>
 </body>
 
