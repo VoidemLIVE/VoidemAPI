@@ -164,7 +164,7 @@ $conn->close();
                         Toggle Restricted
                     </button>
                 </form>
-                <a href="https://apidocs.voidem.com/endpoints/v1-listening" target="#"><button name="helpRestricted" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                <a href="https://apidocs.voidem.com/getting-started/restricted" target="#"><button name="helpRestricted" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                         Help <i class="fas fa-info-circle"></i>
                 </button></a>
             </div>
