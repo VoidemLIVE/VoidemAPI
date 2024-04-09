@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+function printToConsole($data) {
+    echo "<script>console.log('" . $data . "')</script>";
+}
+
 if (!isset($_SESSION["username"])) {
     header("location: login.php");
     exit;
@@ -107,9 +111,44 @@ $conn->close();
     .fa-info-circle {
         font-size: 1rem;
     }
-    .fa-info-circle:hover {
-        color: #4a90e2;
+    .dropdown {
+    position: relative;
+    display: inline-block;
     }
+
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        z-index: 1;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .dropdown-menu a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+    .dropdown-menu a:hover {
+        background-color: #f1f1f1;
+    }
+
+    .dropdown:hover .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-toggle::after {
+        content: "\25BC";
+        margin-left: 5px;
+    }
+
+
 </style>
 </head>
 <body class="bg-gray-100 flex flex-col items-center justify-center h-screen">
@@ -117,60 +156,72 @@ $conn->close();
         <h1 class="text-6xl font-bold text-gray-900 mb-4">Voidem API</h1>
         <p class="text-lg text-gray-700 mb-8">Welcome, <?php echo $username; ?></p>
 
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-base font-bold mb-2" for="api-key">
-                    Uses
-                </label>
-                <input name="uses-box" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="uses-box" type="text" value="<?php 
-                echo ($uses . "/" . $max_uses);
-                if ($uses >= $max_uses) {
-                    echo " [Limit Reached]";
-                }
-                ?>" readonly>
-            </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-base font-bold mb-2" for="api-key">
-                    Your API Key
-                </label>
-                <input name="api-key" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="api-key" type="text" value="<?php echo $apiKey; ?>" readonly>
-            </div>
-            <div class="flex items-center justify-between">
-                <form method="post">
-                    <button name="generate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Generate New Key
-                    </button>
-                </form>
-                <button id="copyButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Copy
-                </button>
-            </div>
-            <br>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-base font-bold mb-2" for="restricted-box">
-                    Restricted
-                </label>
-                <input name="restricted-box" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="restricted-box" type="text" value="<?php 
-                    if ($restricted === 1) {
-                        echo "TRUE";
-                    } else {
-                        echo "FALSE";
-                    }
-                ?>" readonly>
-            </div>
-            <div class="flex items-center justify-between">
-                <form method="post">
-                    <button name="toggleRestricted" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Toggle Restricted
-                    </button>
-                </form>
-                <a href="https://apidocs.voidem.com/getting-started/restricted" target="#"><button name="helpRestricted" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                        Help <i class="fas fa-info-circle"></i>
-                </button></a>
-            </div>
-            <br>
-            <a href="/logout.php" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</a>
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col relative">
+    <div class="mb-4">
+        <label class="block text-gray-700 text-base font-bold mb-2" for="api-key">
+            Uses
+        </label>
+        <input name="uses-box" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="uses-box" type="text" value="<?php 
+        echo ($uses . "/" . $max_uses);
+        if ($uses >= $max_uses) {
+            echo " [Limit Reached]";
+        }
+        ?>" readonly>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-base font-bold mb-2" for="api-key">
+            Your API Key
+        </label>
+        <input name="api-key" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="api-key" type="text" value="<?php echo $apiKey; ?>" readonly>
+    </div>
+    <div class="flex items-center justify-between mb-4">
+        <form method="post">
+            <button name="generate" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Generate New Key
+            </button>
+        </form>
+        <button id="copyButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Copy
+        </button>
+    </div>
+    <div class="mb-4">
+        <label class="block text-gray-700 text-base font-bold mb-2" for="restricted-box">
+            Restricted
+        </label>
+        <input name="restricted-box" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="restricted-box" type="text" value="<?php 
+            if ($restricted === 1) {
+                echo "TRUE";
+            } else {
+                echo "FALSE";
+            }
+        ?>" readonly>
+    </div>
+    <div class="flex items-center justify-between mb-4">
+        <form method="post">
+            <button name="toggleRestricted" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Toggle Restricted
+            </button>
+        </form>
+        <a href="https://apidocs.voidem.com/getting-started/restricted" target="#">
+            <button name="helpRestricted" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Help <i class="fas fa-info-circle"></i>
+            </button>
+        </a>
+    </div>
+    <label class="block text-gray-700 text-base font-bold mb-2" for="restricted-box">
+            Miscellaneous
+        </label>
+    <div class="dropdown">
+        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline dropdown-toggle" id="dropdownMenuButton" aria-haspopup="true" aria-expanded="false">
+            Visualizer
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#" onclick="handleDropdownItemClick('listening')">Listening</a>
         </div>
+    </div>
+    <br>
+    <a href="/logout.php" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</a>
+</div>
     </div>
 </body>
 
@@ -190,4 +241,21 @@ $conn->close();
             document.getElementById("copyButton").innerHTML = "Copy";
         }, 2000);
     });
+
+    function handleDropdownItemClick(apiType) {
+        var xhr = new XMLHttpRequest();
+        var apiKey = "<?php echo $apiKey; ?>";
+        xhr.open('POST', 'visual/opener.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    window.open(xhr.responseText, '_blank');
+                } else {
+                    console.error('AJAX request failed.');
+                }
+            }
+        };
+        xhr.send("apiType=" + apiType + "&apiKey=" + apiKey);
+    }
 </script>
