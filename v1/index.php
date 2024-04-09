@@ -1,3 +1,11 @@
+<?php
+
+function logConsole($msg) {
+    echo "<script>console.log('$msg');</script>";
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
