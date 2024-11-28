@@ -7,6 +7,9 @@ $api_key = isset($_GET['api_key']) ? $_GET['api_key'] : '';
 
 $api_url = 'https://api.voidem.com/v1/listening?api_key=' . $api_key;
 
+include 'getMainColour.php';
+include 'getBrightness.php';
+
 $json_data = file_get_contents($api_url);
 $http_status = null;
 if (isset($http_response_header) && is_array($http_response_header)) {
@@ -34,6 +37,9 @@ if ($http_status !== 429) {
             } else {
                 $playing = "Last Played";
             }
+
+            $mainColour = getMainColour($image);
+            $isDark = getBrightness($mainColour);
         } else {
             //logConsole(json_encode($data["error"]));
             $dataSet = $data["error"];
@@ -86,7 +92,16 @@ if ($http_status !== 429) {
         }
 
         .text-overlay {
-            color: white;
+            <?php
+            if (isset($isDark)) {
+                if ($isDark === false) {
+                    echo "color: black;";
+                } else {
+                    echo "color: white;";
+                }
+            }
+
+            ?>
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
         }
     </style>
